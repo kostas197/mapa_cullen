@@ -40,20 +40,21 @@
           .bindPopup(key);
         })
         
-        var chopper = L.icon({
-    iconUrl: 'assets/helicopter0.png',
-
-    iconSize:     [54, 68], // size of the icon
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        const chopperIco = L.Icon.extend({
+		options: {
+			iconSize:     [150, 150],
+			iconAnchor:   [75, 75],
+			popupAnchor:  [0, 0]
+		}
     });
-    var avion = L.icon({
-    iconUrl: 'assets/B736.png',
-
-    iconSize:     [30, 40], // size of the icon
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-    });
+        const avionIco = L.Icon.extend({
+		options: {
+			iconSize:     [28, 28],
+			iconAnchor:   [14, 14],
+			popupAnchor:  [0, 0]
+		}
+	});
+    
     var sin_senal = L.icon({
     iconUrl: 'assets/sin_senal.png',
 
@@ -61,6 +62,15 @@
     iconAnchor:   [100, 150], // point of the icon which will correspond to marker's location
     popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
+    var bandera = L.icon({
+    iconUrl: 'assets/bandera_ARG_mini.png',
+
+    iconSize:     [64, 59], // size of the icon
+    iconAnchor:   [32, 29], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+});
+
+    marker = L.marker([-51.65,-59.60], {icon: bandera}).addTo(map).bindPopup("¡ISLAS MALVINAS!");
 
     var intervalId = window.setInterval(function(){
     $.getJSON('https://script.google.com/macros/s/AKfycbyPggtaLhuf5aFghr1sMPBP7Fl37Wawc5RZTSHp0_U0aBaok0T9nJKgKoJfcAsVAgMW/exec?vuelos', function(vuelos) {
@@ -71,11 +81,15 @@
             //console.log(key + " - " + value[0] + " - " + value[1]);
             switch(key){
                 case "LVKAE": {
-                    marker = L.marker([value[0], value[1]], {icon: chopper}).addTo(markersLayer).bindPopup(key + " " + value[4] + "Kt");
+                    icono = (parseInt(value[3]/15));
+                    //var iconoObjKAE = window[icono];
+                    marker = L.marker([value[0], value[1]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopper_' + icono + '.png']})}).addTo(markersLayer).bindPopup(key + " " + value[4] + "Kt");
                     break;
                 }
                 case "LVKAF": {
-                    marker = L.marker([value[0], value[1]], {icon: chopper}).addTo(markersLayer).bindPopup(key + " " + value[4] + "Kt");
+                    icono = (parseInt(value[3]/15));
+                    //var iconoObjKAF = window[icono];
+                    marker = L.marker([value[0], value[1]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopper_' + icono + '.png']})}).addTo(markersLayer).bindPopup(key + " " + value[4] + "Kt");
                     break;
                 }
                 case "DUMMY": {
@@ -83,8 +97,10 @@
                     break;
                 }
                 default:{
-                    marker = L.marker([value[0], value[1]], {icon: avion}).addTo(markersLayer).bindPopup(key + " " + value[4] + "Kt");
-                    break;
+                    icono = (parseInt(value[3]/15));
+                    //console.log('assets/avion/avion_' + icono + '.png');
+                    //var iconoObj = window[icono];
+                    marker = L.marker([value[0], value[1]], {icon: new avionIco ({iconUrl: ['assets/avion/avion_' + icono + '.png']})}).addTo(markersLayer).bindPopup(key + " " + value[4] + "Kt");
                 }
             }
         })
