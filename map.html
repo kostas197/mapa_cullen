@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es-ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa HMSA | Cullen</title>
+    <!-- link CSS general-->
+    <link rel="stylesheet" href="css/style.css">
+    <!--CSS leaflet-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <!--JS leaflet-->
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" type="text/javascript"></script>
+
+</head>
+<body>
+    <h1>mapa cullen</h1>
+    <div id="map"></div>
+    <script>
+        var map = L.map('map').setView([-52.894, -68.356], 8);
+        var markersLayer = L.layerGroup().addTo(map);
+
+        const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+    
+    $.getJSON('https://script.google.com/macros/s/AKfycbyPggtaLhuf5aFghr1sMPBP7Fl37Wawc5RZTSHp0_U0aBaok0T9nJKgKoJfcAsVAgMW/exec?waypoints', function(waypoints) {
+        //console.log(waypoints);
+        //console.log(Object.keys(waypoints));
+        Object.entries(waypoints).forEach(([key, value]) =>{
+          const marker = L.marker([value[0], value[1]])
+          .addTo(map)
+          .bindPopup(key);
+        })
+        
+        var chopper = L.icon({
+    iconUrl: 'assets/helicopter0.png',
+
+    iconSize:     [54, 68], // size of the icon
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+    var avion = L.icon({
+    iconUrl: 'assets/B736.png',
+
+    iconSize:     [30, 40], // size of the icon
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+    var sin_senal = L.icon({
+    iconUrl: 'assets/sin_senal.png',
+
+    iconSize:     [250, 310], // size of the icon
+    iconAnchor:   [100, 150], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+
+    var intervalId = window.setInterval(function(){
+    $.getJSON('https://script.google.com/macros/s/AKfycbyPggtaLhuf5aFghr1sMPBP7Fl37Wawc5RZTSHp0_U0aBaok0T9nJKgKoJfcAsVAgMW/exec?vuelos', function(vuelos) {
+        //console.log(vuelos);
+        //console.log(Object.keys(vuelos));
+        markersLayer.clearLayers(); 
+        Object.entries(vuelos).forEach(([key, value]) =>{
+            //console.log(key + " - " + value[0] + " - " + value[1]);
+            switch(key){
+                case "LVKAE": {
+                    marker = L.marker([value[0], value[1]], {icon: chopper}).addTo(markersLayer).bindPopup(key + " " + value[4] + "Kt");
+                    break;
+                }
+                case "LVKAF": {
+                    marker = L.marker([value[0], value[1]], {icon: chopper}).addTo(markersLayer).bindPopup(key + " " + value[4] + "Kt");
+                    break;
+                }
+                case "DUMMY": {
+                    marker = L.marker([value[0], value[1]], {icon: sin_senal}).addTo(markersLayer).bindPopup("SIN SEÑAL");
+                    break;
+                }
+                default:{
+                    marker = L.marker([value[0], value[1]], {icon: avion}).addTo(markersLayer).bindPopup(key + " " + value[4] + "Kt");
+                    break;
+                }
+            }
+        })
+    });
+}, 15000);
+});
+    
+    </script>
+</body>
+</html>

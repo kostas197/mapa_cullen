@@ -1,0 +1,16 @@
+#map { height: 450px; }
+h1{
+    text-align: center;
+}
+
+@media ( max-width: 600px) and (min-width: 380px) {
+    #map { height: 550px; }
+}
+
+@media ( max-width: 1025px) and (min-width: 700px) {
+    #map { height: 850px; }
+}
+
+@media ( max-width: 2048px) and (min-width: 1026px) {
+    #map { height: 900px; }
+}
