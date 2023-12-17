@@ -42,8 +42,8 @@
         
         const chopperIco = L.Icon.extend({
 		options: {
-			iconSize:     [150, 150],
-			iconAnchor:   [75, 75],
+			iconSize:     [36, 36],
+			iconAnchor:   [18, 18],
 			popupAnchor:  [0, 0]
 		}
     });
@@ -70,7 +70,7 @@
     popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
 });
 
-    marker = L.marker([-51.65,-59.60], {icon: bandera}).addTo(map).bindPopup("¡ISLAS MALVINAS!");
+    marker = L.marker([-51.65,-59.60], {icon: bandera}).addTo(map).bindPopup("ISLAS MALVINAS");
 
     var intervalId = window.setInterval(function(){
     $.getJSON('https://script.google.com/macros/s/AKfycbyPggtaLhuf5aFghr1sMPBP7Fl37Wawc5RZTSHp0_U0aBaok0T9nJKgKoJfcAsVAgMW/exec?vuelos', function(vuelos) {
