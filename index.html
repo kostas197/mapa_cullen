@@ -39,13 +39,22 @@
     iconAnchor:   [18, 15], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -15] // point from which the popup should open relative to the iconAnchor
     });
+    var monoboya = L.icon({
+    iconUrl: 'assets/plataforma_mini.png',
+
+    iconSize:     [16, 16], // size of the icon
+    iconAnchor:   [8, 8], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -15] // point from which the popup should open relative to the iconAnchor
+    });
     
     $.getJSON('https://script.google.com/macros/s/AKfycbyPggtaLhuf5aFghr1sMPBP7Fl37Wawc5RZTSHp0_U0aBaok0T9nJKgKoJfcAsVAgMW/exec?waypoints', function(waypoints) {
         //console.log(waypoints);
         //console.log(Object.keys(waypoints));
         Object.entries(waypoints).forEach(([key, value]) =>{
-            if(key == "HCE" || key == "HES" || key == "HFE" || key == "HNO" || key == "HRI" || key == "HVP"){
-            L.marker([value[0],value[1]], {icon: plataforma}).addTo(map).bindPopup(key);}
+            if(key == "HCE" || key == "HES" || key == "HFE" || key == "HNO" || key == "HRI" || key == "HVP")
+            L.marker([value[0],value[1]], {icon: plataforma}).addTo(map).bindPopup(key);
+            if(key == "MONOB"){
+            L.marker([value[0],value[1]], {icon: monoboya}).addTo(map).bindPopup(key);}
             else{
             const marker = L.marker([value[0], value[1]]).addTo(map).bindPopup(key);}
         })
