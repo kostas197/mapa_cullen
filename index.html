@@ -53,10 +53,12 @@
         Object.entries(waypoints).forEach(([key, value]) =>{
             if(key == "HCE" || key == "HES" || key == "HFE" || key == "HNO" || key == "HRI" || key == "HVP")
             L.marker([value[0],value[1]], {icon: plataforma}).addTo(map).bindPopup(key);
+        else{
             if(key == "MONOB"){
             L.marker([value[0],value[1]], {icon: monoboya}).addTo(map).bindPopup(key);}
             else{
-            const marker = L.marker([value[0], value[1]]).addTo(map).bindPopup(key);}
+            const marker = L.marker([value[0], value[1]]).addTo(map).bindPopup(key);}   
+        }
         })
         
         const chopperIco = L.Icon.extend({
