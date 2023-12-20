@@ -1,0 +1,2 @@
+/*transformar varios iconos de color negro a gris*/
+num=0;while [ $num -le 23 ];do convert chopper_$num.png -fuzz 10% -fill gray -opaque black chopperGrey_$num.png;num=$((num + 1));done

@@ -113,6 +113,18 @@
                     marker = L.marker([value[0], value[1]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopper_' + icono + '.png']})}).addTo(markersLayer).bindPopup(key + " " + value[4] + "Kt <br>" + "Alt: " + value[2]);
                     break;
                 }
+                case "LVKAEf": {
+                    icono = (parseInt(value[3]/15));
+                    //var iconoObjKAE = window[icono];
+                    marker = L.marker([value[0], value[1]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopperGrey_' + icono + '.png']})}).addTo(markersLayer).bindPopup("LVKAE " + value[4] + "Kt <br>" + "Alt: " + value[2] + "<br>Ultima vez:" + value[5]);
+                    break;
+                }
+                case "LVKAFf": {
+                    icono = (parseInt(value[3]/15));
+                    //var iconoObjKAF = window[icono];
+                    marker = L.marker([value[0], value[1]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopperGrey_' + icono + '.png']})}).addTo(markersLayer).bindPopup("LVKAF " + value[4] + "Kt <br>" + "Alt: " + value[2] + "<br>Ultima vez:" + value[5]);
+                    break;
+                }
                 case "DUMMY": {
                     marker = L.marker([value[0], value[1]], {icon: sin_senal}).addTo(markersLayer).bindPopup("SIN SEÑAL");
                     break;
