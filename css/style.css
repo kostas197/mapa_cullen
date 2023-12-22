@@ -1,18 +1,17 @@
-
-#map { height: 450px; }
+#map { height: 600px; }
 
 h1{
     text-align: center;
 }
 
-@media ( max-width: 600px) and (min-width: 380px) {
-    #map { height: 550px; }
+@media ( max-height: 900px) and (min-height: 700px) {
+    #map { height: 800px; }
 }
 
-@media ( max-width: 1025px) and (min-width: 700px) {
-    #map { height: 850px; }
+@media ( max-height: 1025px) and (min-height: 901px) {
+    #map { height: 1000px; }
 }
 
-@media ( max-width: 2048px) and (min-width: 1026px) {
-    #map { height: 900px; }
+@media ( max-height: 2048px) and (min-height: 1026px) {
+    #map { height: 1100px; }
 }

@@ -21,11 +21,11 @@
 
 </head>
 <body>
-    <h1>mapa cullen</h1>
     <div id="map"></div>
     <script>
-        var map = L.map('map').setView([-52.894, -68.356], 8);
+        var map = L.map('map').setView([-53.000, -67.400], 8);
         var markersLayer = L.layerGroup().addTo(map);
+        var airplanesLayer = L.layerGroup().addTo(map);
 
         const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
@@ -40,7 +40,7 @@
     popupAnchor:  [0, -15] // point from which the popup should open relative to the iconAnchor
     });
     var monoboya = L.icon({
-    iconUrl: 'assets/plataforma_mini.png',
+    iconUrl: 'assets/monoboya_mini.png',
 
     iconSize:     [16, 16], // size of the icon
     iconAnchor:   [8, 8], // point of the icon which will correspond to marker's location
@@ -52,12 +52,12 @@
         //console.log(Object.keys(waypoints));
         Object.entries(waypoints).forEach(([key, value]) =>{
             if(key == "HCE" || key == "HES" || key == "HFE" || key == "HNO" || key == "HRI" || key == "HVP")
-            L.marker([value[0],value[1]], {icon: plataforma}).addTo(map).bindPopup(key);
+            L.marker([value[0],value[1]], {icon: plataforma}).addTo(markersLayer).bindPopup(key);
         else{
             if(key == "MONOB"){
-            L.marker([value[0],value[1]], {icon: monoboya}).addTo(map).bindPopup(key);}
+            L.marker([value[0],value[1]], {icon: monoboya}).addTo(markersLayer).bindPopup(key);}
             else{
-            const marker = L.marker([value[0], value[1]]).addTo(map).bindPopup(key);}   
+            const marker = L.marker([value[0], value[1]]).addTo(markersLayer).bindPopup(key);}   
         }
         })
         
@@ -91,49 +91,49 @@
     popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
 });
 
-    marker = L.marker([-51.65,-59.60], {icon: bandera}).addTo(map).bindPopup("ISLAS MALVINAS");
+    marker = L.marker([-51.65,-59.60], {icon: bandera}).addTo(markersLayer).bindPopup("ISLAS MALVINAS");
 
     var intervalId = window.setInterval(function(){
     $.getJSON('https://script.google.com/macros/s/AKfycbyPggtaLhuf5aFghr1sMPBP7Fl37Wawc5RZTSHp0_U0aBaok0T9nJKgKoJfcAsVAgMW/exec?vuelos', function(vuelos) {
         //console.log(vuelos);
         //console.log(Object.keys(vuelos));
-        markersLayer.clearLayers(); 
+        airplanesLayer.clearLayers(); 
         Object.entries(vuelos).forEach(([key, value]) =>{
             //console.log(key + " - " + value[0] + " - " + value[1]);
             switch(key){
                 case "LVKAE": {
                     icono = (parseInt(value[3]/15));
                     //var iconoObjKAE = window[icono];
-                    marker = L.marker([value[0], value[1]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopper_' + icono + '.png']})}).addTo(markersLayer).bindPopup(key + " " + value[4] + "Kt <br>" + "Alt: " + value[2]);
+                    marker = L.marker([value[0], value[1]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopper_' + icono + '.png']})}).addTo(airplanesLayer).bindPopup(key + " " + value[4] + "Kt <br>" + "Alt: " + value[2]);
                     break;
                 }
                 case "LVKAF": {
                     icono = (parseInt(value[3]/15));
                     //var iconoObjKAF = window[icono];
-                    marker = L.marker([value[0], value[1]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopper_' + icono + '.png']})}).addTo(markersLayer).bindPopup(key + " " + value[4] + "Kt <br>" + "Alt: " + value[2]);
+                    marker = L.marker([value[0], value[1]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopper_' + icono + '.png']})}).addTo(airplanesLayer).bindPopup(key + " " + value[4] + "Kt <br>" + "Alt: " + value[2]);
                     break;
                 }
                 case "LVKAEf": {
                     icono = (parseInt(value[3]/15));
                     //var iconoObjKAE = window[icono];
-                    marker = L.marker([value[0], value[1]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopperGrey_' + icono + '.png']})}).addTo(markersLayer).bindPopup("LVKAE " + value[4] + "Kt <br>" + "Alt: " + value[2] + "<br>Ultima vez:" + value[5]);
+                    marker = L.marker([value[0], value[1]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopperGrey_' + icono + '.png']})}).addTo(airplanesLayer).bindPopup("LVKAE " + value[4] + "Kt <br>" + "Alt: " + value[2] + "<br>Ultima vez:" + value[5]);
                     break;
                 }
                 case "LVKAFf": {
                     icono = (parseInt(value[3]/15));
                     //var iconoObjKAF = window[icono];
-                    marker = L.marker([value[0], value[1]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopperGrey_' + icono + '.png']})}).addTo(markersLayer).bindPopup("LVKAF " + value[4] + "Kt <br>" + "Alt: " + value[2] + "<br>Ultima vez:" + value[5]);
+                    marker = L.marker([value[0], value[1]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopperGrey_' + icono + '.png']})}).addTo(airplanesLayer).bindPopup("LVKAF " + value[4] + "Kt <br>" + "Alt: " + value[2] + "<br>Ultima vez:" + value[5]);
                     break;
                 }
                 case "DUMMY": {
-                    marker = L.marker([value[0], value[1]], {icon: sin_senal}).addTo(markersLayer).bindPopup("SIN SEÑAL");
+                    marker = L.marker([value[0], value[1]], {icon: sin_senal}).addTo(airplanesLayer).bindPopup("SIN SEÑAL");
                     break;
                 }
                 default:{
                     icono = (parseInt(value[3]/15));
                     //console.log('assets/avion/avion_' + icono + '.png');
                     //var iconoObj = window[icono];
-                    marker = L.marker([value[0], value[1]], {icon: new avionIco ({iconUrl: ['assets/avion/avion_' + icono + '.png']})}).addTo(markersLayer).bindPopup(key + " " + value[4] + "Kt <br>" + "Alt: " + value[2]);
+                    marker = L.marker([value[0], value[1]], {icon: new avionIco ({iconUrl: ['assets/avion/avion_' + icono + '.png']})}).addTo(airplanesLayer).bindPopup(key + " " + value[4] + "Kt <br>" + "Alt: " + value[2]);
                 }
             }
         })
