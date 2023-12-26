@@ -1,0 +1,17 @@
+#map { height: 600px; }
+
+h1{
+    text-align: center;
+}
+
+@media ( max-height: 900px) and (min-height: 700px) {
+    #map { height: 800px; }
+}
+
+@media ( max-height: 1025px) and (min-height: 901px) {
+    #map { height: 1000px; }
+}
+
+@media ( max-height: 2048px) and (min-height: 1026px) {
+    #map { height: 1100px; }
+}
