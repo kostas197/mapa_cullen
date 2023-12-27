@@ -1,2 +1,5 @@
 /*transformar varios iconos de color negro a gris*/
 num=0;while [ $num -le 23 ];do convert chopper_$num.png -fuzz 10% -fill gray -opaque black chopperGrey_$num.png;num=$((num + 1));done
+
+//enviar json
+curl -X POST -H "Content-Type: application/json" -d @file.json http://localhost:3145/vuelos
