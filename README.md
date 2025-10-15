@@ -1,4 +1,4 @@
-# Cullen Flight Map
+# Cullen Flight Map / MapaCullen
 
 ## English
 
@@ -24,6 +24,8 @@ The flight data is received using a **Raspberry Pi 2** connected to an **RTL-SDR
 You can view the live flight map at: **https://vuelos.kmc.ar**
 
 Despite the modest hardware setup, the receiver often picks up signals from aircraft over Uruguay, demonstrating its good range.
+
+About the name of the proyect, It's the name of my previous job location. Cullen, Tierra del Fuego, Argentina.
 
 ---
 
@@ -52,4 +54,4 @@ Puedes ver el mapa de vuelos en tiempo real en: **https://vuelos.kmc.ar**
 
 A pesar de la modesta configuración del hardware, el receptor a menudo capta señales de aeronaves sobre Uruguay, demostrando su buen alcance.
 
----
+Sobre el nombre del proyecto. MapaCullen, este es el nombre de mi lugar de trabajo, el mismo se encuentra en Cullen, Tierra del Fuego, Argentina.
