@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa HMSA | Cullen</title>
     <link rel="shortcut icon" href="assets/favicon/favicon.ico" type="image/x-icon">
-    <!-- link CSS general-->
+    <!-- General CSS link -->
     <link rel="stylesheet" href="css/style.css">
-    <!--CSS leaflet-->
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
-    <!--JS leaflet-->
+    <!-- Leaflet JS -->
     <!-- Make sure you put this AFTER Leaflet's CSS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
@@ -23,129 +23,120 @@
 <body>
     <div id="map"></div>
     <script>
-        const KAE = "e0b045";
-        const KAF = "e0b046";
-        var serverUrl = 'vuelos';
-        
-        var map = L.map('map').setView([-53.000, -67.400], 8);
-        var markersLayer = L.layerGroup().addTo(map);
-        var airplanesLayer = L.layerGroup().addTo(map);
+    const KAE = "e0b045";
+    const KAF = "e0b046";
+    var serverUrl = 'vuelos';
+    
+    var map = L.map('map').setView([-34.6380, -58.4597], 9);
+    var markersLayer = L.layerGroup().addTo(map);
+    var airplanesLayer = L.layerGroup().addTo(map);
 
-        const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		maxZoom: 19,
-		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-	}).addTo(map);
+    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
 
     var plataforma = L.icon({
-    iconUrl: 'assets/plataforma_mini.png',
-
-    iconSize:     [36, 29], // size of the icon
-    iconAnchor:   [18, 15], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -15] // point from which the popup should open relative to the iconAnchor
+        iconUrl: 'assets/plataforma_mini.png',
+        iconSize:     [36, 29],
+        iconAnchor:   [18, 15],
+        popupAnchor:  [0, -15]
     });
     var monoboya = L.icon({
-    iconUrl: 'assets/monoboya_mini.png',
-
-    iconSize:     [16, 16], // size of the icon
-    iconAnchor:   [8, 8], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -15] // point from which the popup should open relative to the iconAnchor
+        iconUrl: 'assets/monoboya_mini.png',
+        iconSize:     [16, 16],
+        iconAnchor:   [8, 8],
+        popupAnchor:  [0, -15]
     });
     
+    // static waypoints to plot
     $.getJSON('https://script.google.com/macros/s/AKfycbyPggtaLhuf5aFghr1sMPBP7Fl37Wawc5RZTSHp0_U0aBaok0T9nJKgKoJfcAsVAgMW/exec?waypoints', function(waypoints) {
-        //console.log(waypoints);
-        //console.log(Object.keys(waypoints));
         Object.entries(waypoints).forEach(([key, value]) =>{
-            if(key == "HCE" || key == "HES" || key == "HFE" || key == "HNO" || key == "HRI" || key == "HVP")
-            L.marker([value[0],value[1]], {icon: plataforma}).addTo(markersLayer).bindPopup(key);
-        else{
-            if(key == "MONOB"){
-            L.marker([value[0],value[1]], {icon: monoboya}).addTo(markersLayer).bindPopup(key);}
-            else{
-            const marker = L.marker([value[0], value[1]], {opacity: 0.7}).addTo(markersLayer).bindPopup(key);}   
-        }
-        })
+            if(key == "HCE" || key == "HES" || key == "HFE" || key == "HNO" || key == "HRI" || key == "HVP") {
+                L.marker([value[0],value[1]], {icon: plataforma}).addTo(markersLayer).bindPopup(key);
+            } else if (key == "MONOB") {
+                L.marker([value[0],value[1]], {icon: monoboya}).addTo(markersLayer).bindPopup(key);
+            } else {
+                L.marker([value[0], value[1]], {opacity: 0.7}).addTo(markersLayer).bindPopup(key);
+            }
+        });
         
         const chopperIco = L.Icon.extend({
-		options: {
-			iconSize:     [36, 36],
-			iconAnchor:   [18, 18],
-			popupAnchor:  [0, 0]
-		}
-    });
-        const avionIco = L.Icon.extend({
-		options: {
-			iconSize:     [28, 28],
-			iconAnchor:   [14, 14],
-			popupAnchor:  [0, 0]
-		}
-	});
-    
-    var sin_senal = L.icon({
-    iconUrl: 'assets/sin_senal_mini.png',
-
-    iconSize:     [36, 36], // size of the icon
-    iconAnchor:   [18, 18], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
-    });
-    var bandera = L.icon({
-    iconUrl: 'assets/bandera_ARG_mini.png',
-
-    iconSize:     [64, 59], // size of the icon
-    iconAnchor:   [32, 29], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
-});
-
-    marker = L.marker([-51.65,-59.60], {icon: bandera}).addTo(markersLayer).bindPopup("ISLAS MALVINAS");
-
-    var intervalId = window.setInterval(function(){
-    $.getJSON(serverUrl, function(vuelos) {
-        //console.log(vuelos);
-        //console.log(Object.keys(vuelos));
-
-        airplanesLayer.clearLayers(); 
-        Object.entries(vuelos).forEach(([key, value]) =>{
-            //console.log(key + " - " + value[0] + " - " + value[1]);
-            switch(key){
-                case KAE: {
-                    icono = (parseInt(value[3]/15));
-                    //var iconoObjKAE = window[icono];
-                    marker = L.marker([value[1], value[2]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopper_' + icono + '.png']})}).addTo(airplanesLayer).bindPopup(value[16] + " " + value[5] + "Kt <br>" + "Alt: " + value[4]);
-                    break;
-                }
-                case KAF: {
-                    icono = (parseInt(value[3]/15));
-                    //var iconoObjKAF = window[icono];
-                    marker = L.marker([value[1], value[2]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopper_' + icono + '.png']})}).addTo(airplanesLayer).bindPopup(value[16] + " " + value[5] + "Kt <br>" + "Alt: " + value[4]);
-                    break;
-                }
-                case "KAEf": {
-                    icono = (parseInt(value[3]/15));
-                    //var iconoObjKAE = window[icono];
-                    marker = L.marker([value[1], value[2]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopperGrey_' + icono + '.png']})}).addTo(airplanesLayer).bindPopup("LVKAE " + value[5] + "Kt <br>" + "Alt: " + value[4] + "<br>Ultima vez:" + value[17]);
-                    break;
-                }
-                case "KAFf": {
-                    icono = (parseInt(value[3]/15));
-                    //var iconoObjKAF = window[icono];
-                    marker = L.marker([value[1], value[2]], {icon: new chopperIco ({iconUrl: ['assets/chopper/chopperGrey_' + icono + '.png']})}).addTo(airplanesLayer).bindPopup("LVKAF " + value[5] + "Kt <br>" + "Alt: " + value[4] + "<br>Ultima vez:" + value[17]);
-                    break;
-                }
-                case "FFFF": {
-                    marker = L.marker([value[1], value[2]], {icon: sin_senal, opacity: 0.5}).addTo(airplanesLayer).bindPopup("SIN SEÑAL");
-                    break;
-                }
-                default:{
-                    icono = (parseInt(value[3]/15));
-                    //console.log('assets/avion/avion_' + icono + '.png');
-                    //var iconoObj = window[icono];
-                    marker = L.marker([value[1], value[2]], {icon: new avionIco ({iconUrl: ['assets/avion/avion_' + icono + '.png']})}).addTo(airplanesLayer).bindPopup(value[16] + " " + value[5] + "Kt <br>" + "Alt: " + value[4]);
-                }
+            options: {
+                iconSize:     [36, 36],
+                iconAnchor:   [18, 18],
+                popupAnchor:  [0, 0]
             }
-        })
-    });
-}, 10000);
-});
+        });
+        const avionIco = L.Icon.extend({
+            options: {
+                iconSize:     [28, 28],
+                iconAnchor:   [14, 14],
+                popupAnchor:  [0, 0]
+            }
+        });
     
-    </script>
+        var bandera = L.icon({
+            iconUrl: 'assets/bandera_ARG_mini.png',
+            iconSize:     [64, 59],
+            iconAnchor:   [32, 29],
+            popupAnchor:  [0, 0]
+        });
+
+        L.marker([-51.65,-59.60], {icon: bandera}).addTo(markersLayer).bindPopup("ISLAS MALVINAS");
+
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function actualizarVuelos() {
+            $.getJSON(serverUrl, function(vuelos) {
+                airplanesLayer.clearLayers(); 
+
+                vuelos.forEach(vuelo => {
+                    // IMPORTANT: Only draw aircraft that have latitude and longitude.
+                    if (vuelo.lat && vuelo.lon) {
+                        let marker;
+                        
+                        // Use default values for properties that might be missing
+                        const callsign = escapeHtml(vuelo.callsign || "N/A");
+                        const speed = vuelo.ground_speed || 0;
+                        const altitude = vuelo.altitude || 0;
+                        const track = vuelo.track || 0;
+                        // The icon is calculated based on the heading (0-24).
+                        const icono = parseInt(track / 15);
+
+                        switch(vuelo.icao) {
+                            case KAE:
+                            case KAF: {
+                                marker = L.marker([vuelo.lat, vuelo.lon], {
+                                    icon: new chopperIco({ iconUrl: 'assets/chopper/chopper_' + icono + '.png' })
+                                }).addTo(airplanesLayer).bindPopup(`${callsign} ${speed}Kt <br>Alt: ${altitude}`);
+                                break;
+                            }
+                            default: {
+                                // All other aircraft will use the 'avion' icon.
+                                marker = L.marker([vuelo.lat, vuelo.lon], {
+                                    icon: new avionIco({ iconUrl: 'assets/avion/avion_' + icono + '.png' })
+                                }).addTo(airplanesLayer).bindPopup(`${callsign} ${speed}Kt <br>Alt: ${altitude}`);
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
+        // 1. Call the function immediately for the initial load.
+        actualizarVuelos();
+
+        // 2. Set up the interval for periodic updates.
+        var intervalId = window.setInterval(actualizarVuelos, 5000);
+    });
+</script>
 </body>
 </html>

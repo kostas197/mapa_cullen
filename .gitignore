@@ -1,13 +1,1 @@
-frontend/html/assets/bandera_ARG.png
-frontend/html/assets/sin_senal.xcf
-frontend/html/assets/sin_senal.png
-frontend/html/assets/helicopter.xcf
-frontend/html/assets/helicopter.jpg
-frontend/html/assets/helicopter0.png
-frontend/html/assets/chopper_old
-frontend/html/assets/plataforma.png
-frontend/html/assets/monoboya.png
-frontend/Dokerfile
-backend/Dokerfile
-backend/.dockerignore
-frontend/.dockerignore
+.env
