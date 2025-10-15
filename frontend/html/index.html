@@ -25,7 +25,7 @@
     <script>
     const KAE = "e0b045";
     const KAF = "e0b046";
-    var serverUrl = 'vuelos';
+    var vuelosUrl = 'vuelos';
     
     var map = L.map('map').setView([-34.6380, -58.4597], 9);
     var markersLayer = L.layerGroup().addTo(map);
@@ -50,7 +50,7 @@
     });
     
     // static waypoints to plot
-    $.getJSON('https://script.google.com/macros/s/AKfycbyPggtaLhuf5aFghr1sMPBP7Fl37Wawc5RZTSHp0_U0aBaok0T9nJKgKoJfcAsVAgMW/exec?waypoints', function(waypoints) {
+    $.getJSON('waypoints', function(waypoints) {
         Object.entries(waypoints).forEach(([key, value]) =>{
             if(key == "HCE" || key == "HES" || key == "HFE" || key == "HNO" || key == "HRI" || key == "HVP") {
                 L.marker([value[0],value[1]], {icon: plataforma}).addTo(markersLayer).bindPopup(key);
@@ -95,7 +95,7 @@
         }
 
         function actualizarVuelos() {
-            $.getJSON(serverUrl, function(vuelos) {
+            $.getJSON(vuelosUrl, function(vuelos) {
                 airplanesLayer.clearLayers(); 
 
                 vuelos.forEach(vuelo => {

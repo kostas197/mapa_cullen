@@ -4,6 +4,7 @@ import time
 import socket
 import threading
 import os
+import requests
 from flask import Flask, jsonify
 from flask_cors import CORS
 
@@ -23,9 +24,11 @@ DATA_EXPIRATION_SECONDS = 300  # 300 seconds / 5 minutes
 
 # --- In-memory data of nearby airplanes ---
 aircraft_data = {}
+waypoints_data = {}
 # Use a lock to prevent concurrency issues when accessing data
 # from both the parser thread and the web server thread.
 data_lock = threading.Lock()
+waypoints_lock = threading.Lock()
 
 
 # --- Thread for dump1090 ---
@@ -113,6 +116,25 @@ def cleanup_thread():
         cleanup_old_aircraft()
         time.sleep(15)
 
+def fetch_waypoints_thread():
+    """This thread periodically fetches waypoint data from the Google Script URL."""
+    url = "https://script.google.com/macros/s/AKfycbyPggtaLhuf5aFghr1sMPBP7Fl37Wawc5RZTSHp0_U0aBaok0T9nJKgKoJfcAsVAgMW/exec?waypoints"
+    while True:
+        try:
+            response = requests.get(url)
+            response.raise_for_status()  # Raise an exception for bad status codes
+            with waypoints_lock:
+                global waypoints_data
+                waypoints_data = response.json()
+            print("Successfully updated waypoints data.")
+            # Wait for 1 hour before the next update
+            time.sleep(3600)
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching waypoints: {e}. Retrying in 60 seconds...")
+            time.sleep(60)
+        except KeyboardInterrupt:
+            break
+
 def log_aircraft_count_thread():
     """Periodically logs the number of aircraft being tracked."""
     while True:
@@ -137,6 +159,12 @@ def get_flights():
         # so that the JSON is an array of objects, which is more standard for APIs.
         return jsonify(list(aircraft_data.values()))
 
+@app.route('/api/waypoints')
+def get_waypoints():
+    """Endpoint that returns cached waypoint data."""
+    with waypoints_lock:
+        return jsonify(waypoints_data)
+
 
 # --- Main entry point ---
 if __name__ == '__main__':
@@ -151,8 +179,12 @@ if __name__ == '__main__':
     print("Starting the aircraft count logging thread...")
     logging_thread = threading.Thread(target=log_aircraft_count_thread, daemon=True)
     logging_thread.start()
+    
+    print("Starting the thread to fetch waypoints...")
+    waypoints_fetcher = threading.Thread(target=fetch_waypoints_thread, daemon=True)
+    waypoints_fetcher.start()
 
     print(f"Starting Flask server at http://{FLASK_HOST}:{FLASK_PORT}")
-    print("Make sure you have the libraries installed: pip install Flask Flask-Cors")
+    print("Make sure you have the libraries installed: pip install Flask Flask-Cors requests")
     # We use 'threaded=True' so that Flask handles multiple requests at once
     app.run(host=FLASK_HOST, port=FLASK_PORT, threaded=True, debug=DEBUG_MODE)
