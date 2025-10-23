@@ -120,14 +120,14 @@
                             case KAF: {
                                 marker = L.marker([vuelo.lat, vuelo.lon], {
                                     icon: new chopperIco({ iconUrl: 'assets/chopper/chopper_' + icono + '.png' })
-                                }).addTo(airplanesLayer).bindPopup(`${callsign}<br>${speed}Kt<br>Alt: ${altitude}`);
+                                }).addTo(airplanesLayer).bindPopup(`${callsign} <br> Vel: ${speed}Kt <br> Alt: ${altitude}ft`);
                                 break;
                             }
                             default: {
                                 // All other aircraft will use the 'avion' icon.
                                 marker = L.marker([vuelo.lat, vuelo.lon], {
                                     icon: new avionIco({ iconUrl: 'assets/avion/avion_' + icono + '.png' })
-                                }).addTo(airplanesLayer).bindPopup(`${callsign}<br>${speed}Kt<br>Alt: ${altitude}`);
+                                }).addTo(airplanesLayer).bindPopup(`${callsign} <br> Vel: ${speed}Kt <br> Alt: ${altitude}ft`);
                             }
                         }
                     }
