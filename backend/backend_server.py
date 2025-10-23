@@ -165,6 +165,13 @@ def get_waypoints():
     with waypoints_lock:
         return jsonify(waypoints_data)
 
+@app.route('/api/health')
+def get_health():
+    """Endpoint that returns fake status."""
+    aircraft_count = count = len(aircraft_data)
+    if(aircraft_count > 1):
+        return jsonify({"status":"healthy", "aircraft_on_track":aircraft_count})
+    return jsonify({"status":"healthy"})
 
 # --- Main entry point ---
 if __name__ == '__main__':
