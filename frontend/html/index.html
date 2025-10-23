@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa HMSA | Cullen</title>
+    <title>Mapa Cullen|Vuelos</title>
     <link rel="shortcut icon" href="assets/favicon/favicon.ico" type="image/x-icon">
     <!-- General CSS link -->
     <link rel="stylesheet" href="css/style.css">
@@ -23,8 +23,10 @@
 <body>
     <div id="map"></div>
     <script>
-    const KAE = "e0b045";
-    const KAF = "e0b046";
+    const KAE = "E0B045";
+    const KAF = "E0B046";
+    const LQBIS = "E02253";
+    const LQKHW = "E0B217";
     var vuelosUrl = 'vuelos';
     
     var map = L.map('map').setView([-34.6380, -58.4597], 9);
@@ -113,17 +115,19 @@
 
                         switch(vuelo.icao) {
                             case KAE:
+                            case LQKHW:
+                            case LQBIS:
                             case KAF: {
                                 marker = L.marker([vuelo.lat, vuelo.lon], {
                                     icon: new chopperIco({ iconUrl: 'assets/chopper/chopper_' + icono + '.png' })
-                                }).addTo(airplanesLayer).bindPopup(`${callsign} ${speed}Kt <br>Alt: ${altitude}`);
+                                }).addTo(airplanesLayer).bindPopup(`${callsign}<br>${speed}Kt<br>Alt: ${altitude}`);
                                 break;
                             }
                             default: {
                                 // All other aircraft will use the 'avion' icon.
                                 marker = L.marker([vuelo.lat, vuelo.lon], {
                                     icon: new avionIco({ iconUrl: 'assets/avion/avion_' + icono + '.png' })
-                                }).addTo(airplanesLayer).bindPopup(`${callsign} ${speed}Kt <br>Alt: ${altitude}`);
+                                }).addTo(airplanesLayer).bindPopup(`${callsign}<br>${speed}Kt<br>Alt: ${altitude}`);
                             }
                         }
                     }
