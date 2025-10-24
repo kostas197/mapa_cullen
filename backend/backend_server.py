@@ -37,12 +37,16 @@ def sbs_parser_thread():
     while True:
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                # Set a timeout to prevent the socket from blocking indefinitely.
+                # This will help in reconnecting if the connection is lost.
+                s.settimeout(360)
                 s.connect((DUMP1090_HOST, DUMP1090_PORT))
                 print(f"Connected to dump1090 at {DUMP1090_HOST}:{DUMP1090_PORT}")
                 buffer = ""
                 while True:
                     data = s.recv(1024).decode('utf-8', 'ignore')
                     if not data:
+                        print("Connection to dump1090 closed. Reconnecting...")
                         break
 
                     buffer += data
